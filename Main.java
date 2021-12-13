@@ -2,14 +2,24 @@ import java.util.Scanner;
 
 class Main{
 
-    static boolean cekLogin, menuJalan, programJalan = true;
+    static boolean cekLogin, menuJalan, masterJalan, programJalan = true;
     static int menu, denda, perpanjangan;
     static String nim, kodeBarang;
-    static String dataBarang[][] = {{"A1", "Buku Novel A", "5"}, {"B1", "Buku Novel B", "3"}};
-    static String dataPeminjaman[][] = new String[4][50];;
-    static String dataMahasiwa[][] = new String[2][50];
+    static String dataBarang[][] = new String[50][3];
+    static String dataPeminjaman[][] = new String[50][3];;
+    static String dataMahasiwa[][] = new String[50][2];
     static private String dataUser[] = {"rani","123"};
     static private String dataLogin[] = new String[2];
+    static Scanner input = new Scanner(System.in);
+    static String dummyData[][] = {{"A1", "Buku Novel A", "5"}, {"B1", "Buku Novel B", "3"}};
+
+    static void initialize(){
+        for(int i = 0; i < dummyData.length; i++){
+            dataBarang[i][0] = dummyData[i][0];
+            dataBarang[i][1] = dummyData[i][1];
+            dataBarang[i][2] = dummyData[i][2];
+        }
+    }
 
     static boolean cekLogin(String username, String pass){
         if(username.equals(dataUser[0]) && pass.equals(dataUser[1])){
@@ -18,17 +28,42 @@ class Main{
             return false;
         }
     }
-
+    
     static void getDataBarang(){
+        initialize();
         System.out.println("=== Daftar Barang ===");
         System.out.print("No\tKode Barang\tNama Barang\tStok Barang");
         for(int i = 0; i < dataBarang.length; i++){
-            System.out.printf("\n%d\t%s\t\t%s\t%s", (i+1), dataBarang[i][0], dataBarang[i][1], dataBarang[i][2]);
+            if(dataBarang[i][0] != null){
+                System.out.printf("\n%d\t%s\t\t%s\t%s", (i+1), dataBarang[i][0], dataBarang[i][1], dataBarang[i][2]);
+            }
         }
     }
 
+    static void inputDataBarang(){
+        String menuInput;
+        System.out.println("Input Barang");
+        for(int i = dummyData.length; i < dataBarang.length; i++){
+            System.out.print("Masukkan kode barang: ");
+            dataBarang[i][0] = input.nextLine();
+            System.out.print("Masukkan nama barang: ");
+            dataBarang[i][1] = input.nextLine();
+            System.out.print("Masukkan stok barang: ");
+            dataBarang[i][2] = input.nextLine();
+            System.out.print("Apakah anda ingin lanjut melakukan input barang? (y/t): ");
+            menuInput = input.nextLine();
+
+            if(menuInput.equalsIgnoreCase("t")){
+                break;
+            }
+        }
+    }
+
+    static void editDataBarang(){
+        System.out.println("Edit Barang");
+    }
+
     public static void main(String[] args){
-        Scanner input = new Scanner(System.in);
         String divider = " ====================================";
 
         System.out.printf("%s\n Selamat Datang di Sistem Peminjaman \n%s", divider, divider);
@@ -61,14 +96,33 @@ class Main{
                         input.nextLine();
                         switch(menu){
                             case 1:
-                            getDataBarang();
-                            System.out.printf("\nSilahkan pilih menu dibawah:" +
-                                           "\n1. Input Barang" +
-                                           "\n2. Edit Barang" +
-                                           "\n3. Kembali ke menu utama");
-                            System.out.print("\nMasukkan menu: ");
-                            menu = input.nextInt();
-                            input.nextLine();
+                            masterJalan = true;
+                            while(masterJalan){
+                                getDataBarang();
+                                System.out.printf("\nSilahkan pilih menu dibawah:" +
+                                               "\n1. Input Barang" +
+                                               "\n2. Edit Barang" +
+                                               "\n3. Kembali ke menu utama");
+                                System.out.print("\nMasukkan menu: ");
+                                menu = input.nextInt();
+                                input.nextLine();
+    
+                                switch (menu) {
+                                    case 1:
+                                    inputDataBarang();
+                                    break;
+                                    case 2:
+                                    editDataBarang();
+                                    break;
+                                    case 3:
+                                    masterJalan = false;
+                                    break;
+                                
+                                    default:
+                                    System.out.println("Menu yang anda input salah");
+                                    break;
+                                }
+                            }
                             break;
 
                             case 2:
