@@ -30,19 +30,21 @@ class Main{
     }
     
     static void getDataBarang(){
-        initialize();
-        System.out.println("=== Daftar Barang ===");
-        System.out.print("No\tKode Barang\tNama Barang\tStok Barang");
+        String leftAlignFormat = "| %-2d | %-4s | %-16s | %-4s |%n";
+        System.out.println("\n=========== Daftar Barang =============");
+        System.out.format("+----+------+------------------+------+%n");
+        System.out.format("| No | Kode | Nama Barang      | Stok |%n");
+        System.out.format("+----+------+------------------+------+%n");
         for(int i = 0; i < dataBarang.length; i++){
             if(dataBarang[i][0] != null){
-                System.out.printf("\n%d\t%s\t\t%s\t%s", (i+1), dataBarang[i][0], dataBarang[i][1], dataBarang[i][2]);
+                System.out.format(leftAlignFormat, (i+1), dataBarang[i][0], dataBarang[i][1], dataBarang[i][2]);
             }
         }
+        System.out.format("+----+------+------------------+------+%n");
     }
 
     static void inputDataBarang(){
         String menuInput;
-        System.out.println("Input Barang");
         for(int i = dummyData.length; i < dataBarang.length; i++){
             System.out.print("Masukkan kode barang: ");
             dataBarang[i][0] = input.nextLine();
@@ -60,12 +62,83 @@ class Main{
     }
 
     static void editDataBarang(){
-        System.out.println("Edit Barang");
+        boolean editJalan, menuEditMaster = true;
+        String kodeBarang, namaBarang, stokBarang, isContinue;
+        int indexBarang = dataBarang.length+1;
+        while(menuEditMaster){
+            System.out.print("Masukkan kode barang yang ingin di edit: ");
+            kodeBarang = input.nextLine();
+
+            for(int i = 0; i<dataBarang.length; i++){
+                if(dataBarang[i][0].equals(kodeBarang)){
+                    indexBarang = i;
+                    break;
+                }
+            }
+
+            if(indexBarang != dataBarang.length+1){
+                editJalan = true;
+                while(editJalan){
+                    String leftAlignFormat = "| %-4s | %-16s | %-4s |%n";
+                    System.out.println("\nBarang yang ingin anda edit adalah: ");
+                    System.out.format("+------+------------------+------+%n");
+                    System.out.format("| Kode | Nama Barang      | Stok |%n");
+                    System.out.format("+------+------------------+------+%n");
+                    System.out.printf(leftAlignFormat, dataBarang[indexBarang][0], dataBarang[indexBarang][1], dataBarang[indexBarang][2]);
+                    System.out.format("+------+------------------+------+%n");
+        
+                    System.out.println("\nApa yang ingin anda ubah?"+
+                                        "\n1. Kode Barang" + 
+                                        "\n2. Nama Barang" +
+                                        "\n3. Stok Barang" +
+                                        "\n4. Tidak ada");
+                    System.out.print("Masukkan pilihan: ");
+                    menu = input.nextInt();
+                    input.nextLine();
+    
+                    switch (menu) {
+                        case 1:
+                            System.out.print("Kode baru: ");
+                            kodeBarang = input.nextLine();
+                            dataBarang[indexBarang][0] = kodeBarang;
+                            break;
+    
+                        case 2:
+                            System.out.print("Nama baru: ");
+                            namaBarang = input.nextLine();
+                            dataBarang[indexBarang][1] = namaBarang;
+                            break;
+    
+                        case 3:
+                            System.out.print("Stok baru: ");
+                            stokBarang = input.nextLine();
+                            dataBarang[indexBarang][2] = stokBarang;
+                            break;
+                        
+                        case 4:
+                            editJalan = false;
+                            break;
+                    
+                        default:
+                        System.out.println("Maaf, pilihan yang anda masukkan salah");
+                            break;
+                    }
+                }
+            }else{
+                System.out.println("Maaf, kode barang yang anda masukkan salah");
+            }
+
+            System.out.println("Apakah ingin melakukan edit kembali? (y/t)");
+            isContinue = input.nextLine();
+            if(isContinue.equalsIgnoreCase("t")){
+                menuEditMaster = false;
+            }
+        }
     }
 
     public static void main(String[] args){
-        String divider = " ====================================";
-
+        initialize();
+        String divider = "=====================================";
         System.out.printf("%s\n Selamat Datang di Sistem Peminjaman \n%s", divider, divider);
 
         while(programJalan){
@@ -76,6 +149,7 @@ class Main{
 
             switch(menu){
                 case 1:
+                System.out.println("\n===== Login =====");
                 System.out.print("Masukkan username anda: ");
                 dataLogin[0] = input.nextLine();
                 System.out.print("Masukkan password anda: ");
@@ -84,7 +158,7 @@ class Main{
 
                 if(cekLogin){
                     menuJalan = true;
-                    System.out.println("Selamat Datang");
+                    System.out.print("\nSelamat Datang!");
                     while(menuJalan){
                         System.out.printf("\nSilahkan pilih menu dibawah:" +
                                            "\n1. Menu Data Master Barang" +
