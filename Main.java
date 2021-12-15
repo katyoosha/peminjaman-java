@@ -6,7 +6,7 @@ class Main{
     static int menu, denda, perpanjangan;
     static String nim, kodeBarang;
     static String dataBarang[][] = new String[50][3];
-    static String dataPeminjaman[][] = new String[50][3];;
+    static String dataPeminjaman[][] = new String[50][4];;
     static String dataMahasiwa[][] = new String[50][2];
     static private String dataUser[] = {"rani","123"};
     static private String dataLogin[] = new String[2];
@@ -42,6 +42,54 @@ class Main{
         }
         System.out.format("+----+------+------------------+------+%n");
     }
+
+    static void pinjamBarang(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("=== Menu Pinjam Barang ===");
+        getDataBarang();
+        int tanggalPinjam=0;
+        String pjmLagi;
+        int k=0;
+        int barangKembali=0;
+        int nim=0;
+
+        do{
+        System.out.print("\nMasukkan NIM : ");
+        nim = input.nextInt();
+        dataPeminjaman[k][0] = Integer.toString(nim);
+        input.nextLine();
+        System.out.print("Masukkan kode barang : ");
+        dataPeminjaman[k][1] = input.nextLine();
+        
+        do{
+        System.out.print("Masukkan tanggal pinjam [1-31] : ");    
+        tanggalPinjam = input.nextInt();    
+        if(tanggalPinjam<=0||tanggalPinjam>=31){
+            System.out.println("Tanggal Salah!");
+        }
+        }while(tanggalPinjam<=0||tanggalPinjam>31);
+         dataPeminjaman[k][2] = Integer.toString(tanggalPinjam);
+        if(tanggalPinjam<25){
+           barangKembali = tanggalPinjam+7; 
+        }else{
+            barangKembali = (tanggalPinjam+7)-30;
+        }
+        dataPeminjaman[k][3] = Integer.toString(barangKembali);
+       
+        
+        input.nextLine();
+        System.out.println("Apakah ada barang yang ingin dipinjam lagi? (y/t) ");
+        pjmLagi = input.nextLine();
+        k++; 
+    }while(pjmLagi.equalsIgnoreCase("y"));
+    System.out.println("========= Daftar Barang yang telah Dipinjam =========");
+    System.out.printf("%-10s %10s %10s %10s\n","NIM","Kode Barang","Tanggal Pinjam","Tanggal Kembali");
+    System.out.println("=====================================================");
+    for(int i = 0;i < k; i++){
+        System.out.printf("%-10s %-10s %10s %10s\n",dataPeminjaman[i][0],dataPeminjaman[i][1],dataPeminjaman[i][2],dataPeminjaman[i][3]);
+    }
+    }
+
 
     static void inputDataBarang(){
         String menuInput;
@@ -201,6 +249,7 @@ class Main{
 
                             case 2:
                             System.out.println("Masuk pinjam");
+                            pinjamBarang();
                             break;
 
                             case 3:
