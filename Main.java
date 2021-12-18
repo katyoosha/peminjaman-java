@@ -21,14 +21,6 @@ class Main{
             dataBarang[i][2] = dummyData[i][2];
         }
     }
-
-    static boolean cekLogin(String username, String pass){
-        if(username.equals(dataUser[0]) && pass.equals(dataUser[1])){
-            return true;
-        }else{
-            return false;
-        }
-    }
     
     static void getDataBarang(){
         String leftAlignFormat = "| %-2d | %-4s | %-16s | %-4s |%n";
@@ -44,15 +36,26 @@ class Main{
         System.out.format("+----+------+------------------+------+%n");
     }
 
-    static int cariKode(String kode){
-        int indexKode = dataBarang.length+1;
-        for(int i = 0; i < dataBarang.length; i++){
-            if(kode.equalsIgnoreCase(dataBarang[i][0])){
-                indexKode = i;
+    static void getDataPeminjaman(){
+        String leftAlignFormat = "| %-2d | %-14s | %-11s | %-11s | %-12s |%n";
+        System.out.println("\n================= Daftar Peminjaman ===================");
+        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+        System.out.format("| No | NIM            | Kode Barang | Tgl. Pinjam | Tgl. Kembali |%n");
+        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+        for(int i = 0; i < dataPeminjaman.length; i++){
+            if(dataPeminjaman[i][0] != null){
+                System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], dataPeminjaman[i][3]);
             }
         }
+        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+    }
 
-        return indexKode;
+    static boolean cekLogin(String username, String pass){
+        if(username.equals(dataUser[0]) && pass.equals(dataUser[1])){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     static void pinjamBarang(){
@@ -123,18 +126,15 @@ class Main{
         }
     }
 
-    static void getDataPeminjaman(){
-        String leftAlignFormat = "| %-2d | %-14s | %-11s | %-11s | %-12s |%n";
-        System.out.println("\n================= Daftar Peminjaman ===================");
-        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
-        System.out.format("| No | NIM            | Kode Barang | Tgl. Pinjam | Tgl. Kembali |%n");
-        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+    static int cariKode(String kode){
+        int indexKode = dataBarang.length+1;
         for(int i = 0; i < dataBarang.length; i++){
-            if(dataPeminjaman[i][0] != null){
-                System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], dataPeminjaman[i][3]);
+            if(kode.equalsIgnoreCase(dataBarang[i][0])){
+                indexKode = i;
             }
         }
-        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+
+        return indexKode;
     }
 
     static void inputDataBarang(){
@@ -230,6 +230,46 @@ class Main{
         }
     }
 
+    static void kembalibarang(){
+        String dataKembalian[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
+        String temp[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
+        String nimDataKembali, kodeBarangKembali;
+
+        System.out.println("\n==== Pengembalian Barang ====");
+        System.out.print("Masukkan NIM:\t");
+        nimDataKembali = input.nextLine();
+        System.out.print("Masukkan Kode:\t");
+        kodeBarangKembali = input.nextLine();
+
+        for(int i = 0; i < dataPeminjaman.length; i++){
+            for(int a = 0; a < dataPeminjaman[i].length; a++){
+                if(dataPeminjaman[i][0] != null){
+                    if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
+                        continue;
+                    }else{
+                        temp[i][a] = dataPeminjaman[i][a];
+                    }
+                }
+            }
+        }
+
+        int counter = 0;
+        for(int i = 0; i < temp.length; i++) {
+            if(temp[i][0] != null) {
+                dataKembalian[counter++] = temp[i];
+            }
+        }
+
+        for(int i = 0; i < dataPeminjaman.length; i++){
+            for(int a = 0; a < dataPeminjaman[i].length; a++){
+                dataPeminjaman[i][a] = dataKembalian[i][a];
+            }
+        }
+
+        System.out.println("\nBerhasil melakukan pengembalian barang!");
+
+    }
+
     public static void main(String[] args){
         initialize();
         String divider = "=====================================";
@@ -323,7 +363,7 @@ class Main{
                             break;
 
                             case 3:
-                            System.out.println("Masuk kembali");
+                            kembalibarang();
                             break;
 
                             case 4:
