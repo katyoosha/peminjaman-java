@@ -66,10 +66,10 @@ class Main{
             kurangStok-=1;
             dataBarang[j][2] = Integer.toString(kurangStok);
               
-           } 
-            
+           }else{
+               System.out.println("Maaf Kode Tidak Valid");
+           }
         }
-        
             do{
             System.out.print("Masukkan tanggal pinjam [1-31] : ");    
             tanggalPinjam = input.nextInt();    
