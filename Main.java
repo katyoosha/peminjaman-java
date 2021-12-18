@@ -3,6 +3,7 @@ import java.util.Scanner;
 class Main{
 
     static boolean cekLogin, menuJalan, masterJalan, programJalan = true;
+    static boolean menuPinjamJalan;
     static int menu, denda, perpanjangan;
     static String nim, kodeBarang;
     static String dataBarang[][] = new String[50][3];
@@ -43,6 +44,17 @@ class Main{
         System.out.format("+----+------+------------------+------+%n");
     }
 
+    static int cariKode(String kode){
+        int indexKode = dataBarang.length+1;
+        for(int i = 0; i < dataBarang.length; i++){
+            if(kode.equalsIgnoreCase(dataBarang[i][0])){
+                indexKode = i;
+            }
+        }
+
+        return indexKode;
+    }
+
     static void pinjamBarang(){
         Scanner input = new Scanner(System.in);
         System.out.println("=== Menu Pinjam Barang ===");
@@ -53,46 +65,57 @@ class Main{
         int k=0;
         int barangKembali=0;
         int kurangStok=0;
+        int indexKode;
 
         do{
             System.out.print("Masukkan NIM : ");
             dataPeminjaman[k][0] = input.nextLine();
             System.out.print("Masukkan kode barang : ");
             dataPeminjaman[k][1] = input.nextLine();
-        
-            for(int j=0; j<dataBarang.length;j++){
-                if(dataPeminjaman[k][1].equalsIgnoreCase(dataBarang[j][0])){
-                    kurangStok = Integer.parseInt(dataBarang[j][2]);
-                    kurangStok-=1;
-                    dataBarang[j][2] = Integer.toString(kurangStok);
-                }
-            }
 
-            do{
-                System.out.print("Masukkan tanggal pinjam [1-31] : ");    
-                tanggalPinjam = input.nextInt();    
-                if(tanggalPinjam<=0||tanggalPinjam>=31){
-                    System.out.println("Tanggal Salah!");
+            indexKode = cariKode(dataPeminjaman[k][1]);
+
+            if(indexKode != dataBarang.length+1){
+                kurangStok = Integer.parseInt(dataBarang[indexKode][2]);
+                kurangStok-=1;
+                dataBarang[indexKode][2] = Integer.toString(kurangStok);
+
+                do{
+                    System.out.print("Masukkan tanggal pinjam [1-31] : ");    
+                    tanggalPinjam = input.nextInt();    
+                    if(tanggalPinjam<=0||tanggalPinjam>31){
+                        System.out.println("Tanggal Salah!");
+                    }
                 }
-            }
-            while(tanggalPinjam<=0||tanggalPinjam>31);
-            
-            dataPeminjaman[k][2] = Integer.toString(tanggalPinjam);
-            if(tanggalPinjam<25){
-                barangKembali = tanggalPinjam+7; 
+                while(tanggalPinjam<=0||tanggalPinjam>31);
+                
+                dataPeminjaman[k][2] = Integer.toString(tanggalPinjam);
+                if(tanggalPinjam<25){
+                    barangKembali = tanggalPinjam+7; 
+                }else{
+                    barangKembali = (tanggalPinjam+7)-30;
+                }
+    
+                dataPeminjaman[k][3] = Integer.toString(barangKembali);
+                input.nextLine();
             }else{
-                barangKembali = (tanggalPinjam+7)-30;
+                System.out.println("Maaf, kode barang yang anda masukkan salah!");
             }
-
-            dataPeminjaman[k][3] = Integer.toString(barangKembali);
         
-            input.nextLine();
+            // for(int j=0; j<dataBarang.length;j++){
+            //     if(cariKode){
+            //         kurangStok = Integer.parseInt(dataBarang[j][2]);
+            //         kurangStok-=1;
+            //         dataBarang[j][2] = Integer.toString(kurangStok);
+            //     }
+            // }
+           
             System.out.print("Apakah ada barang yang ingin dipinjam lagi? (y/t) ");
             pjmLagi = input.nextLine();
             k++;
         }
         while(pjmLagi.equalsIgnoreCase("y"));
-        System.out.println("========= Daftar Barang yang telah Dipinjam =========");
+        System.out.println("\n========= Daftar Barang yang telah Dipinjam =========");
         System.out.printf("%-10s %10s %10s %10s\n","NIM","Kode Barang","Tanggal Pinjam","Tanggal Kembali");
         System.out.println("=====================================================");
         for(int i = 0;i < k; i++){
@@ -100,7 +123,19 @@ class Main{
         }
     }
 
-
+    static void getDataPeminjaman(){
+        String leftAlignFormat = "| %-2d | %-14s | %-11s | %-11s | %-12s |%n";
+        System.out.println("\n================= Daftar Peminjaman ===================");
+        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+        System.out.format("| No | NIM            | Kode Barang | Tgl. Pinjam | Tgl. Kembali |%n");
+        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+        for(int i = 0; i < dataBarang.length; i++){
+            if(dataPeminjaman[i][0] != null){
+                System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], dataPeminjaman[i][3]);
+            }
+        }
+        System.out.format("+----+----------------+-------------+-------------+--------------+%n");
+    }
 
     static void inputDataBarang(){
         String menuInput;
@@ -259,8 +294,32 @@ class Main{
                             break;
 
                             case 2:
-                            System.out.println("Masuk pinjam");
-                            pinjamBarang();
+                            menuPinjamJalan = true;
+                            while(menuPinjamJalan){
+                                System.out.printf("\n==== Sub-menu Peminjaman ====" +
+                                                "\nSilahkan pilih menu dibawah:" +
+                                                "\n1. Lihat Data Peminjaman" +
+                                                "\n2. Input Peminjaman" +
+                                                "\n3. Kembali ke menu utama");
+                                System.out.print("\nMasukkan menu: ");
+                                menu = input.nextInt();
+                                input.nextLine();
+                                switch (menu) {
+                                    case 1:
+                                    getDataPeminjaman();
+                                    break;
+                                    case 2:
+                                    pinjamBarang();
+                                    break;
+                                    case 3:
+                                    menuPinjamJalan = false;
+                                    break;
+                                
+                                    default:
+                                    System.out.println("Menu yang anda input salah");
+                                    break;
+                                }
+                            } 
                             break;
 
                             case 3:
