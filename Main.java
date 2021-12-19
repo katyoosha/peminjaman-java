@@ -12,7 +12,7 @@ class Main{
     static private String dataLogin[] = new String[2];
     static Scanner input = new Scanner(System.in);
     static String dummyData[][] = {{"A1", "Buku Novel A", "5"}, {"B1", "Buku Novel B", "3"}};
-    static int simpanData [] = new int[50];
+
     static void initialize(){
 
         for(int i = 0; i < dummyData.length; i++){
@@ -50,6 +50,34 @@ class Main{
         System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
     }
 
+    static int hitungDataPeminjaman(){
+        int counter = 0;
+        for(int i = 0; i < dataPeminjaman.length; i++){
+            if(dataPeminjaman[i][0] != null){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    static String[] cekDuplikatDataPeminjaman(String nim, String kode, String tglPinjam){
+        String cekDuplikat[] = new String[6];
+        for(int i = 0; i < dataPeminjaman.length; i++){
+            if(dataPeminjaman[i][0] != null){
+                if(dataPeminjaman[i][0].equalsIgnoreCase(nim) && dataPeminjaman[i][1].equalsIgnoreCase(kode) && dataPeminjaman[i][2].equalsIgnoreCase(tglPinjam)){
+                    cekDuplikat[0] = dataPeminjaman[i][0];
+                    cekDuplikat[1] = dataPeminjaman[i][1];
+                    cekDuplikat[2] = dataPeminjaman[i][2];
+                    cekDuplikat[3] = dataPeminjaman[i][3];
+                    cekDuplikat[4] = dataPeminjaman[i][4];
+                    cekDuplikat[5] = Integer.toString(i);
+                }
+            }
+        }
+
+        return cekDuplikat;
+    }
+
     static boolean cekLogin(String username, String pass){
         if(username.equals(dataUser[0]) && pass.equals(dataUser[1])){
             return true;
@@ -64,88 +92,77 @@ class Main{
         getDataBarang();
         String pjmLagi, nimPeminjaman, kodeBarangPinjam;
         int tanggalPinjam = 0;
-        int k = 0;
+        int k = hitungDataPeminjaman();
         int barangKembali = 0;
         int kurangStok = 0;
         int indexKode = dataBarang.length+1;
-        int banyakPinjam=0;
-        int count=0;
-        count = simpanDataPinjam(k);
+        int banyakPinjam = 0;
+        int indexPinjam;
+        String cekDuplikat[] = new String[dataPeminjaman[0].length];
 
         do{
             System.out.print("Masukkan NIM : ");
             nimPeminjaman = input.nextLine();
             System.out.print("Masukkan kode barang : ");
             kodeBarangPinjam = input.nextLine();
-            System.out.print("Masukkan jumlah buku yang ingin dipinjam : ");
+            System.out.print("Masukkan jumlah barang yang ingin dipinjam : ");
             banyakPinjam = input.nextInt();
-            
+            input.nextLine();
             indexKode = cariKode(kodeBarangPinjam);
 
             if(indexKode != dataBarang.length+1){
                 kurangStok = Integer.parseInt(dataBarang[indexKode][2]);
                 if(kurangStok > 0){
-                    kurangStok= kurangStok - banyakPinjam;
-                    dataBarang[indexKode][2] = Integer.toString(kurangStok);
-    
-                    do{
-                        System.out.print("Masukkan tanggal pinjam [1-31] : ");    
-                        tanggalPinjam = input.nextInt();    
-                        if(tanggalPinjam<=0||tanggalPinjam>31){
-                            System.out.println("Tanggal Salah!");
+                    if(banyakPinjam <= kurangStok){
+                        kurangStok = kurangStok - banyakPinjam;
+                        dataBarang[indexKode][2] = Integer.toString(kurangStok);
+        
+                        do{
+                            System.out.print("Masukkan tanggal pinjam [1-31] : ");    
+                            tanggalPinjam = input.nextInt();    
+                            input.nextLine();
+                            if(tanggalPinjam<=0||tanggalPinjam>31){
+                                System.out.println("Tanggal Salah!");
+                            }
                         }
-                    }
-                    while(tanggalPinjam<=0||tanggalPinjam>31);
-                    
-                    dataPeminjaman[count][2] = Integer.toString(tanggalPinjam);
-                    if(tanggalPinjam<25){
-                        barangKembali = tanggalPinjam+7; 
+                        while(tanggalPinjam<=0||tanggalPinjam>31);
+                        
+                        if(tanggalPinjam<25){
+                            barangKembali = tanggalPinjam+7; 
+                        }else{
+                            barangKembali = (tanggalPinjam+7)-30;
+                        }
+
+                        cekDuplikat = cekDuplikatDataPeminjaman(nimPeminjaman, kodeBarangPinjam, Integer.toString(tanggalPinjam));
+                        
+                        if(cekDuplikat[0] == null){
+                            k = hitungDataPeminjaman();
+                            dataPeminjaman[k][0] = nimPeminjaman;
+                            dataPeminjaman[k][1] = kodeBarangPinjam;
+                            dataPeminjaman[k][2] = Integer.toString(tanggalPinjam);
+                            dataPeminjaman[k][3] = Integer.toString(barangKembali);
+                            dataPeminjaman[k][4] = Integer.toString(banyakPinjam);
+                        }else{
+                            indexPinjam = Integer.parseInt(cekDuplikat[5]);
+                            banyakPinjam += Integer.parseInt(cekDuplikat[4]);
+                            dataPeminjaman[indexPinjam][4] = Integer.toString(banyakPinjam);
+                        }
+
                     }else{
-                        barangKembali = (tanggalPinjam+7)-30;
+                        System.out.println("Maaf, stok yang diinputkan melebihi jumlah barang tersedia!");
                     }
-                    
-                    dataPeminjaman[count][0] = nimPeminjaman;
-                    dataPeminjaman[count][1] = kodeBarangPinjam;
-                    dataPeminjaman[count][3] = Integer.toString(barangKembali);
-                    dataPeminjaman[count][4] = Integer.toString(banyakPinjam);
-
-                    input.nextLine();
-                   
-
                 }else{
                     System.out.println("Maaf, stok untuk barang ini habis!");
                 }
             }else{
                 System.out.println("Maaf, kode barang yang anda masukkan salah!");
             }
-           
             System.out.print("Apakah ada barang yang ingin dipinjam lagi? (y/t) ");
             pjmLagi = input.nextLine();
-            count++;
             k++;
-            
         }
         while(pjmLagi.equalsIgnoreCase("y"));
-        String leftAlignFormat = "| %-2d | %-13s | %-11s | %-11s | %-12s | %-12s |%n";
-        System.out.println("\n=============== Daftar Barang yang telah Dipinjam ===============");
-        System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
-        System.out.format("| No | NIM           | Kode Barang | Tgl. Pinjam | Tgl. Kembali |     Banyak   |%n");
-        System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
-       
-        int start = count-k;
-        for(int i = 0; i < k; i++){
-            if(dataPeminjaman[i][0] != null){
-                if (count != 0){
-                    System.out.format(leftAlignFormat, (start+1), dataPeminjaman[start][0], dataPeminjaman[start][1], dataPeminjaman[start][2],dataPeminjaman[i][3],dataPeminjaman[i][4]);
-                    start++;
-                }else{
-                    System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2],dataPeminjaman[i][3],dataPeminjaman[i][4]);
-                }
-               
-            }
-        }
-        System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
-        count = simpanDataPinjam(k);
+        getDataPeminjaman();
     }
 
     static int cariKode(String kode){
@@ -155,18 +172,8 @@ class Main{
                 indexKode = i;
             }
         }
-
         return indexKode;
     }
-
-    static int simpanDataPinjam(int k){
-        int simpan;
-        simpanData [1] = simpanData[1]+k; 
-        simpan = simpanData[1];
-       
-        return simpan;
-    }
-
 
     static void inputDataBarang(){
         String menuInput;
