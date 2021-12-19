@@ -7,8 +7,7 @@ class Main{
     static int menu, denda, perpanjangan;
     static String nim, kodeBarang;
     static String dataBarang[][] = new String[50][3];
-    static String dataPeminjaman[][] = new String[50][4];;
-    static String dataMahasiwa[][] = new String[50][2];
+    static String dataPeminjaman[][] = new String[50][4];
     static private String dataUser[] = {"rani","123"};
     static private String dataLogin[] = new String[2];
     static Scanner input = new Scanner(System.in);
@@ -233,41 +232,54 @@ class Main{
     static void kembalibarang(){
         String dataKembalian[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String temp[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
-        String nimDataKembali, kodeBarangKembali;
+        String nimDataKembali, kodeBarangKembali, pengembalianLagi;
+        boolean isDataPinjam = false, pengembalianJalan = true;
 
-        System.out.println("\n==== Pengembalian Barang ====");
-        System.out.print("Masukkan NIM:\t");
-        nimDataKembali = input.nextLine();
-        System.out.print("Masukkan Kode:\t");
-        kodeBarangKembali = input.nextLine();
-
-        for(int i = 0; i < dataPeminjaman.length; i++){
-            for(int a = 0; a < dataPeminjaman[i].length; a++){
-                if(dataPeminjaman[i][0] != null){
-                    if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
-                        continue;
-                    }else{
-                        temp[i][a] = dataPeminjaman[i][a];
+        while(pengembalianJalan){
+            System.out.println("\n==== Pengembalian Barang ====");
+            System.out.print("Masukkan NIM:\t");
+            nimDataKembali = input.nextLine();
+            System.out.print("Masukkan Kode:\t");
+            kodeBarangKembali = input.nextLine();
+    
+            for(int i = 0; i < dataPeminjaman.length; i++){
+                for(int a = 0; a < dataPeminjaman[i].length; a++){
+                    if(dataPeminjaman[i][0] != null){
+                        if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
+                            isDataPinjam = true;
+                            continue;
+                        }else{
+                            temp[i][a] = dataPeminjaman[i][a];
+                        }
                     }
                 }
             }
-        }
-
-        int counter = 0;
-        for(int i = 0; i < temp.length; i++) {
-            if(temp[i][0] != null) {
-                dataKembalian[counter++] = temp[i];
+    
+            if(isDataPinjam){
+                int counter = 0;
+                for(int i = 0; i < temp.length; i++) {
+                    if(temp[i][0] != null) {
+                        dataKembalian[counter++] = temp[i];
+                    }
+                }
+        
+                for(int i = 0; i < dataPeminjaman.length; i++){
+                    for(int a = 0; a < dataPeminjaman[i].length; a++){
+                        dataPeminjaman[i][a] = dataKembalian[i][a];
+                    }
+                }
+        
+                System.out.println("\nBerhasil melakukan pengembalian barang!");
+            }else{
+                System.out.println("\nMaaf, tidak ada data peminjaman yang sesuai!");
             }
-        }
 
-        for(int i = 0; i < dataPeminjaman.length; i++){
-            for(int a = 0; a < dataPeminjaman[i].length; a++){
-                dataPeminjaman[i][a] = dataKembalian[i][a];
+            System.out.print("Apakah mau melakukan pengembalian lagi? (y/t): ");
+            pengembalianLagi = input.nextLine();
+            if(pengembalianLagi.equalsIgnoreCase("t")){
+                pengembalianJalan = false;
             }
-        }
-
-        System.out.println("\nBerhasil melakukan pengembalian barang!");
-
+        }        
     }
 
     public static void main(String[] args){
