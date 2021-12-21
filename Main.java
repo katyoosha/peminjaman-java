@@ -77,7 +77,6 @@ class Main{
                     cekDuplikat[4] = dataPeminjaman[i][4];
                     cekDuplikat[5] = Integer.toString(i);
                 }
-                
             }
         }
 
@@ -316,7 +315,7 @@ class Main{
                         denda = Integer.parseInt(tanggalBalik)-tanggalKembali;
                         totalDenda = denda*5000;
                         System.out.printf("\nKarena telat mengembalikan %d hari maka didenda %d",denda,totalDenda);
-                    }
+                    }   
                 for(int i = 0; i < temp.length; i++) {
                     if(temp[i][0] != null) {
                         dataKembalian[counter++] = temp[i];
