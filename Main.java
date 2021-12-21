@@ -7,11 +7,7 @@ class Main{
     static int menu, denda, perpanjangan;
     static String nim, kodeBarang;
     static String dataBarang[][] = new String[50][3];
-<<<<<<< HEAD
     static String dataPeminjaman[][] = new String[50][5];
-=======
-    static String dataPeminjaman[][] = new String[50][4];
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
     static private String dataUser[] = {"rani","123"};
     static private String dataLogin[] = new String[2];
     static Scanner input = new Scanner(System.in);
@@ -41,7 +37,6 @@ class Main{
     }
 
     static void getDataPeminjaman(){
-<<<<<<< HEAD
         String leftAlignFormat = "| %-2d | %-13s | %-11s | %-11s | %-12s | %-12s |%n";
         System.out.println("\n======================= Daftar Peminjaman =======================");
         System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
@@ -88,21 +83,6 @@ class Main{
         return cekDuplikat;
     }
 
-=======
-        String leftAlignFormat = "| %-2d | %-13s | %-11s | %-11s | %-12s |%n";
-        System.out.println("\n======================= Daftar Peminjaman =======================");
-        System.out.format("+----+---------------+-------------+-------------+--------------+%n");
-        System.out.format("| No | NIM           | Kode Barang | Tgl. Pinjam | Tgl. Kembali |%n");
-        System.out.format("+----+---------------+-------------+-------------+--------------+%n");
-        for(int i = 0; i < dataPeminjaman.length; i++){
-            if(dataPeminjaman[i][0] != null){
-                System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], dataPeminjaman[i][3]);
-            }
-        }
-        System.out.format("+----+---------------+-------------+-------------+--------------+%n");
-    }
-
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
     static boolean cekLogin(String username, String pass){
         if(username.equals(dataUser[0]) && pass.equals(dataUser[1])){
             return true;
@@ -116,7 +96,6 @@ class Main{
         
         getDataBarang();
         String pjmLagi, nimPeminjaman, kodeBarangPinjam;
-<<<<<<< HEAD
         int tanggalPinjam = 0;
         int k = hitungDataPeminjaman();
         int barangKembali = 0;
@@ -125,33 +104,20 @@ class Main{
         int banyakPinjam = 0;
         int indexPinjam;
         String cekDuplikat[] = new String[dataPeminjaman[0].length];
-=======
-        String dataPinjamMenu[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
-        int tanggalPinjam = 0;
-        int k = 0;
-        int barangKembali = 0;
-        int kurangStok = 0;
-        int indexKode = dataBarang.length+1;
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
 
         do{
             System.out.print("Masukkan NIM : ");
             nimPeminjaman = input.nextLine();
             System.out.print("Masukkan kode barang : ");
             kodeBarangPinjam = input.nextLine();
-<<<<<<< HEAD
             System.out.print("Masukkan jumlah barang yang ingin dipinjam : ");
             banyakPinjam = input.nextInt();
             input.nextLine();
-=======
-
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
             indexKode = cariKode(kodeBarangPinjam);
 
             if(indexKode != dataBarang.length+1){
                 kurangStok = Integer.parseInt(dataBarang[indexKode][2]);
                 if(kurangStok > 0){
-<<<<<<< HEAD
                     if(banyakPinjam <= kurangStok){
                         kurangStok = kurangStok - banyakPinjam;
                         dataBarang[indexKode][2] = Integer.toString(kurangStok);
@@ -190,62 +156,18 @@ class Main{
                     }else{
                         System.out.println("Maaf, stok yang diinputkan melebihi jumlah barang tersedia!");
                     }
-=======
-                    kurangStok-=1;
-                    dataBarang[indexKode][2] = Integer.toString(kurangStok);
-    
-                    do{
-                        System.out.print("Masukkan tanggal pinjam [1-31] : ");    
-                        tanggalPinjam = input.nextInt();    
-                        if(tanggalPinjam<=0||tanggalPinjam>31){
-                            System.out.println("Tanggal Salah!");
-                        }
-                    }
-                    while(tanggalPinjam<=0||tanggalPinjam>31);
-                    
-                    dataPeminjaman[k][2] = Integer.toString(tanggalPinjam);
-                    if(tanggalPinjam<25){
-                        barangKembali = tanggalPinjam+7; 
-                    }else{
-                        barangKembali = (tanggalPinjam+7)-30;
-                    }
-    
-                    dataPeminjaman[k][0] = nimPeminjaman;
-                    dataPeminjaman[k][1] = kodeBarangPinjam;
-                    dataPeminjaman[k][3] = Integer.toString(barangKembali);
-                    dataPinjamMenu[k] = dataPeminjaman[k];
-                    input.nextLine();
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
                 }else{
                     System.out.println("Maaf, stok untuk barang ini habis!");
                 }
             }else{
                 System.out.println("Maaf, kode barang yang anda masukkan salah!");
             }
-<<<<<<< HEAD
-=======
-           
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
             System.out.print("Apakah ada barang yang ingin dipinjam lagi? (y/t) ");
             pjmLagi = input.nextLine();
             k++;
         }
         while(pjmLagi.equalsIgnoreCase("y"));
-<<<<<<< HEAD
         getDataPeminjaman();
-=======
-        String leftAlignFormat = "| %-2d | %-13s | %-11s | %-11s | %-12s |%n";
-        System.out.println("\n=============== Daftar Barang yang telah Dipinjam ===============");
-        System.out.format("+----+---------------+-------------+-------------+--------------+%n");
-        System.out.format("| No | NIM           | Kode Barang | Tgl. Pinjam | Tgl. Kembali |%n");
-        System.out.format("+----+---------------+-------------+-------------+--------------+%n");
-        for(int i = 0; i < k; i++){
-            if(dataPinjamMenu[i][0] != null){
-                System.out.format(leftAlignFormat, (i+1), dataPinjamMenu[i][0],dataPinjamMenu[i][1],dataPinjamMenu[i][2],dataPinjamMenu[i][3]);
-            }
-        }
-        System.out.format("+----+---------------+-------------+-------------+--------------+%n");
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
     }
 
     static int cariKode(String kode){
@@ -255,10 +177,6 @@ class Main{
                 indexKode = i;
             }
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
         return indexKode;
     }
 
@@ -358,10 +276,7 @@ class Main{
         String dataKembalian[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String temp[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String nimDataKembali, kodeBarangKembali, pengembalianLagi;
-<<<<<<< HEAD
         int stockKembali = 0, indexKode, stockBarang;
-=======
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
         boolean isDataPinjam = false, pengembalianJalan = true;
 
         while(pengembalianJalan){
@@ -372,7 +287,6 @@ class Main{
             kodeBarangKembali = input.nextLine();
     
             for(int i = 0; i < dataPeminjaman.length; i++){
-<<<<<<< HEAD
                 if(dataPeminjaman[i][0] != null){
                     for(int a = 0; a < dataPeminjaman[i].length; a++){
                         
@@ -386,26 +300,13 @@ class Main{
                         }
                     if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
                         stockKembali += Integer.parseInt(dataPeminjaman[i][4]);
-=======
-                for(int a = 0; a < dataPeminjaman[i].length; a++){
-                    if(dataPeminjaman[i][0] != null){
-                        if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
-                            isDataPinjam = true;
-                            continue;
-                        }else{
-                            temp[i][a] = dataPeminjaman[i][a];
-                        }
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
                     }
                 }
             }
     
             if(isDataPinjam){
                 int counter = 0;
-<<<<<<< HEAD
                 indexKode = cariKode(kodeBarangKembali);
-=======
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
                 for(int i = 0; i < temp.length; i++) {
                     if(temp[i][0] != null) {
                         dataKembalian[counter++] = temp[i];
@@ -417,13 +318,9 @@ class Main{
                         dataPeminjaman[i][a] = dataKembalian[i][a];
                     }
                 }
-<<<<<<< HEAD
 
                 stockBarang = Integer.parseInt(dataBarang[indexKode][2]) + stockKembali;
                 dataBarang[indexKode][2] = Integer.toString(stockBarang);
-=======
-        
->>>>>>> 35f4d2c4c745e8672793f0a366b4c48ae1ca06ef
                 System.out.println("\nBerhasil melakukan pengembalian barang!");
             }else{
                 System.out.println("\nMaaf, tidak ada data peminjaman yang sesuai!");
