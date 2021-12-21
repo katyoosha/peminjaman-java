@@ -218,7 +218,6 @@ class Main{
                     System.out.format("+------+------------------+------+%n");
                     System.out.printf(leftAlignFormat, dataBarang[indexBarang][0], dataBarang[indexBarang][1], dataBarang[indexBarang][2]);
                     System.out.format("+------+------------------+------+%n");
-        
                     System.out.println("\nApa yang ingin anda ubah?"+
                                         "\n1. Kode Barang" + 
                                         "\n2. Nama Barang" +
@@ -272,6 +271,7 @@ class Main{
         String dataKembalian[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String temp[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String nimDataKembali, kodeBarangKembali, pengembalianLagi;
+        int stockKembali = 0, indexKode, stockBarang;
         boolean isDataPinjam = false, pengembalianJalan = true;
 
         while(pengembalianJalan){
@@ -282,20 +282,26 @@ class Main{
             kodeBarangKembali = input.nextLine();
     
             for(int i = 0; i < dataPeminjaman.length; i++){
-                for(int a = 0; a < dataPeminjaman[i].length; a++){
-                    if(dataPeminjaman[i][0] != null){
-                        if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
-                            isDataPinjam = true;
-                            continue;
-                        }else{
-                            temp[i][a] = dataPeminjaman[i][a];
+                if(dataPeminjaman[i][0] != null){
+                    for(int a = 0; a < dataPeminjaman[i].length; a++){
+                        
+                            if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
+                                isDataPinjam = true;
+                                
+                                continue;
+                            }else{
+                                temp[i][a] = dataPeminjaman[i][a];
+                            }
                         }
+                    if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
+                        stockKembali += Integer.parseInt(dataPeminjaman[i][4]);
                     }
                 }
             }
     
             if(isDataPinjam){
                 int counter = 0;
+                indexKode = cariKode(kodeBarangKembali);
                 for(int i = 0; i < temp.length; i++) {
                     if(temp[i][0] != null) {
                         dataKembalian[counter++] = temp[i];
@@ -307,7 +313,9 @@ class Main{
                         dataPeminjaman[i][a] = dataKembalian[i][a];
                     }
                 }
-        
+
+                stockBarang = Integer.parseInt(dataBarang[indexKode][2]) + stockKembali;
+                dataBarang[indexKode][2] = Integer.toString(stockBarang);
                 System.out.println("\nBerhasil melakukan pengembalian barang!");
             }else{
                 System.out.println("\nMaaf, tidak ada data peminjaman yang sesuai!");
