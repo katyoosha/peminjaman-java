@@ -77,6 +77,7 @@ class Main{
                     cekDuplikat[4] = dataPeminjaman[i][4];
                     cekDuplikat[5] = Integer.toString(i);
                 }
+                
             }
         }
 
