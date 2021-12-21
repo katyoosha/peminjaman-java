@@ -275,9 +275,15 @@ class Main{
     static void kembalibarang(){
         String dataKembalian[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String temp[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
+<<<<<<< HEAD
+        String nimDataKembali, kodeBarangKembali, pengembalianLagi;
+        int stockKembali = 0, indexKode, stockBarang, tanggalKembali=0;
+=======
         String nimDataKembali, kodeBarangKembali, pengembalianLagi, tanggalPinjam;
         int stockKembali = 0, indexKode, stockBarang;
+>>>>>>> f6ee8d84647649c27f49bea839e5b37391a348a4
         boolean isDataPinjam = false, pengembalianJalan = true;
+        String tanggalBalik;
 
         while(pengembalianJalan){
             System.out.println("\n==== Pengembalian Barang ====");
@@ -285,13 +291,23 @@ class Main{
             nimDataKembali = input.nextLine();
             System.out.print("Masukkan Kode:\t");
             kodeBarangKembali = input.nextLine();
+<<<<<<< HEAD
+            System.out.print("Masukkan tanggal kembali [1-31]: ");
+            tanggalBalik = input.nextLine();
+=======
             System.out.print("Masukkan Tanggal Pinjam:\t");
             tanggalPinjam = input.nextLine();
+>>>>>>> f6ee8d84647649c27f49bea839e5b37391a348a4
     
             for(int i = 0; i < dataPeminjaman.length; i++){
                 if(dataPeminjaman[i][0] != null){
                     for(int a = 0; a < dataPeminjaman[i].length; a++){
+<<<<<<< HEAD
+                        if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
+                            tanggalKembali = Integer.parseInt(dataPeminjaman[i][2]);
+=======
                         if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali) && dataPeminjaman[i][2].equalsIgnoreCase(tanggalPinjam)){
+>>>>>>> f6ee8d84647649c27f49bea839e5b37391a348a4
                             isDataPinjam = true;
                             stockKembali = Integer.parseInt(dataPeminjaman[i][4]);
                             continue;
@@ -304,7 +320,16 @@ class Main{
     
             if(isDataPinjam){
                 int counter = 0;
+                int denda=0,totalDenda=0;
                 indexKode = cariKode(kodeBarangKembali);
+                if(tanggalKembali>31){
+                    tanggalBalik+=31;
+                    }
+                    if(Integer.parseInt(tanggalBalik)>tanggalKembali){
+                        denda = Integer.parseInt(tanggalBalik)-tanggalKembali;
+                        totalDenda = denda*5000;
+                        System.out.printf("\nKarena telat mengembalikan %d hari maka didenda %d",denda,totalDenda);
+                    }
                 for(int i = 0; i < temp.length; i++) {
                     if(temp[i][0] != null) {
                         dataKembalian[counter++] = temp[i];
