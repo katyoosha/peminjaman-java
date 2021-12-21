@@ -45,6 +45,7 @@ class Main{
         for(int i = 0; i < dataPeminjaman.length; i++){
             if(dataPeminjaman[i][0] != null){
                 System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], dataPeminjaman[i][3],dataPeminjaman[i][4]);
+
                 if(Integer.parseInt(dataPeminjaman[i][3])>31){
                  System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], Integer.parseInt(dataPeminjaman[i][3])-31,dataPeminjaman[i][4]);
                 }else{
@@ -57,6 +58,7 @@ class Main{
 
     static int hitungDataPeminjaman(){
         int counter = 0;
+
         for(int i = 0; i < dataPeminjaman.length; i++){
             if(dataPeminjaman[i][0] != null){
                 counter++;
@@ -135,9 +137,9 @@ class Main{
                         if(tanggalPinjam<25){
                             barangKembali = tanggalPinjam+7; 
                         }else{
+
                             barangKembali = (tanggalPinjam+7);
                         }
-
                         cekDuplikat = cekDuplikatDataPeminjaman(nimPeminjaman, kodeBarangPinjam, Integer.toString(tanggalPinjam));
                         
                         if(cekDuplikat[0] == null){
