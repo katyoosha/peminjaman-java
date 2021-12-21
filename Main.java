@@ -309,7 +309,7 @@ class Main{
                 int denda=0,totalDenda=0;
                 String perpanjangan;
                 indexKode = cariKode(kodeBarangKembali);
-                if(Integer.parseInt(tanggalBalik)<tanggalPinjam+7){
+                if(Integer.parseInt(tanggalBalik)<=tanggalPinjam+7){
                     System.out.print("Apakah anda ingin memperpanjang peminjaman? (y/t) ");
                     perpanjangan= input.nextLine();
                     if(perpanjangan.equalsIgnoreCase("y")){
@@ -325,6 +325,7 @@ class Main{
                                 
                             }
                         }
+                    }
                   }else{
                     if(tanggalPinjam>31){
                         tanggalBalik+=31;
@@ -351,11 +352,10 @@ class Main{
                     System.out.println("\nBerhasil melakukan pengembalian barang!");
                   }
 
+                }else{
+                    System.out.println("\nMaaf, tidak ada data peminjaman yang sesuai!");
                 }
                 
-                
-            }else{
-                System.out.println("\nMaaf, tidak ada data peminjaman yang sesuai!");
             }
 
             System.out.print("Apakah mau melakukan pengembalian lagi? (y/t): ");
@@ -364,7 +364,7 @@ class Main{
                 pengembalianJalan = false;
             }
         }        
-    }
+
 
     public static void main(String[] args){
         initialize();
