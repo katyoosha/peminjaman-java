@@ -44,8 +44,6 @@ class Main{
         System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
         for(int i = 0; i < dataPeminjaman.length; i++){
             if(dataPeminjaman[i][0] != null){
-                System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], dataPeminjaman[i][3],dataPeminjaman[i][4]);
-
                 if(Integer.parseInt(dataPeminjaman[i][3])>31){
                  System.out.format(leftAlignFormat, (i+1), dataPeminjaman[i][0], dataPeminjaman[i][1], dataPeminjaman[i][2], Integer.parseInt(dataPeminjaman[i][3])-31,dataPeminjaman[i][4]);
                 }else{
@@ -277,7 +275,7 @@ class Main{
     static void kembalibarang(){
         String dataKembalian[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
         String temp[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
-        String nimDataKembali, kodeBarangKembali, pengembalianLagi;
+        String nimDataKembali, kodeBarangKembali, pengembalianLagi, tanggalPinjam;
         int stockKembali = 0, indexKode, stockBarang;
         boolean isDataPinjam = false, pengembalianJalan = true;
 
@@ -287,21 +285,19 @@ class Main{
             nimDataKembali = input.nextLine();
             System.out.print("Masukkan Kode:\t");
             kodeBarangKembali = input.nextLine();
+            System.out.print("Masukkan Tanggal Pinjam:\t");
+            tanggalPinjam = input.nextLine();
     
             for(int i = 0; i < dataPeminjaman.length; i++){
                 if(dataPeminjaman[i][0] != null){
                     for(int a = 0; a < dataPeminjaman[i].length; a++){
-                        
-                            if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
-                                isDataPinjam = true;
-                                
-                                continue;
-                            }else{
-                                temp[i][a] = dataPeminjaman[i][a];
-                            }
+                        if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali) && dataPeminjaman[i][2].equalsIgnoreCase(tanggalPinjam)){
+                            isDataPinjam = true;
+                            stockKembali = Integer.parseInt(dataPeminjaman[i][4]);
+                            continue;
+                        }else{
+                            temp[i][a] = dataPeminjaman[i][a];
                         }
-                    if(dataPeminjaman[i][0].equalsIgnoreCase(nimDataKembali) && dataPeminjaman[i][1].equalsIgnoreCase(kodeBarangKembali)){
-                        stockKembali += Integer.parseInt(dataPeminjaman[i][4]);
                     }
                 }
             }
