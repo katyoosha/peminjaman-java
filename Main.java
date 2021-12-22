@@ -378,12 +378,11 @@ class Main{
                     System.out.println("\nMaaf, tidak ada data peminjaman yang sesuai!");
                 }
                 
-            }
-
-            System.out.print("Apakah mau melakukan pengembalian lagi? (y/t): ");
-            pengembalianLagi = input.nextLine();
-            if(pengembalianLagi.equalsIgnoreCase("t")){
-                pengembalianJalan = false;
+                System.out.print("Apakah mau melakukan pengembalian lagi? (y/t): ");
+                pengembalianLagi = input.nextLine();
+                if(pengembalianLagi.equalsIgnoreCase("t")){
+                    pengembalianJalan = false;
+                }
             }
         }        
 
