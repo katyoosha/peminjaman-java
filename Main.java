@@ -170,6 +170,28 @@ class Main{
         getDataPeminjaman();
     }
 
+    static String[][] cariPeminjaman(String nim, String kode){
+        String dataPinjam[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
+        int counter = 0;
+        for(int i = 0; i < dataPeminjaman.length; i++){
+            if(dataPeminjaman[i][0] != null){
+                if(nim != "" && kode != ""){
+                    if(nim.equals(dataPeminjaman[i][0]) && kode.equals(dataPeminjaman[i][1])){
+                        dataPinjam[counter] = dataPeminjaman[i];
+                        counter++; 
+                    }
+                }else if(nim != "" || kode != ""){
+                    if(nim.equals(dataPeminjaman[i][0]) || kode.equals(dataPeminjaman[i][1])){
+                        dataPinjam[counter] = dataPeminjaman[i];
+                        counter++; 
+                    }
+                }
+            }
+        }
+        
+        return dataPinjam;
+    }
+
     static int cariKode(String kode){
         int indexKode = dataBarang.length+1;
         for(int i = 0; i < dataBarang.length; i++){
@@ -435,8 +457,9 @@ class Main{
                                 System.out.printf("\n==== Sub-menu Peminjaman ====" +
                                                 "\nSilahkan pilih menu dibawah:" +
                                                 "\n1. Lihat Data Peminjaman" +
-                                                "\n2. Input Peminjaman" +
-                                                "\n3. Kembali ke menu utama");
+                                                "\n2. Cari Data Peminjaman" +
+                                                "\n3. Input Peminjaman" +
+                                                "\n4. Kembali ke menu utama");
                                 System.out.print("\nMasukkan menu: ");
                                 menu = input.nextInt();
                                 input.nextLine();
@@ -445,11 +468,46 @@ class Main{
                                     getDataPeminjaman();
                                     break;
                                     case 2:
-                                    pinjamBarang();
+                                    String cekCari;
+                                    String nimCari = "", kodeCari = "";
+                                    String dataPinjam[][] = new String[dataPeminjaman.length][dataPeminjaman[0].length];
+                                    System.out.println("=== Pencarian Data Peminjaman ===");
+                                    System.out.print("Apakah ingin mencari NIM? (y/t)");
+                                    cekCari = input.nextLine();
+                                    if(cekCari.equalsIgnoreCase("y")){
+                                        System.out.print("Masukkan NIM: ");
+                                        nimCari = input.nextLine();
+                                    }
+                                    System.out.print("Apakah ingin mencari Kode? (y/t)");
+                                    cekCari = input.nextLine();
+                                    if(cekCari.equalsIgnoreCase("y")){
+                                        System.out.print("Masukkan Kode: ");
+                                        kodeCari = input.nextLine();
+                                    }
+
+                                    dataPinjam = cariPeminjaman(nimCari, kodeCari);
+                                    String leftAlignFormat = "| %-2d | %-13s | %-11s | %-11s | %-12s | %-12s |%n";
+                                    System.out.println("\n======================= Hasil Pencarian =======================");
+                                    System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
+                                    System.out.format("| No | NIM           | Kode Barang | Tgl. Pinjam | Tgl. Kembali |     Banyak   |%n");
+                                    System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
+                                    for(int i = 0; i < dataPinjam.length; i++){
+                                        if(dataPinjam[i][0] != null){
+                                            if(Integer.parseInt(dataPinjam[i][3])>31){
+                                            System.out.format(leftAlignFormat, (i+1), dataPinjam[i][0], dataPinjam[i][1], dataPinjam[i][2], Integer.parseInt(dataPinjam[i][3])-31,dataPinjam[i][4]);
+                                            }else{
+                                                System.out.format(leftAlignFormat, (i+1), dataPinjam[i][0], dataPinjam[i][1], dataPinjam[i][2], dataPinjam[i][3],dataPinjam[i][4]);
+                                            }
+                                        }
+                                    }
+                                    System.out.format("+----+---------------+-------------+-------------+--------------+--------------+%n");
+
                                     break;
                                     case 3:
-                                    menuPinjamJalan = false;
+                                    menuPinjamJalan = false;pinjamBarang();
                                     break;
+                                    case 4:
+                                    menuPinjamJalan = false;
                                 
                                     default:
                                     System.out.println("Menu yang anda input salah");
